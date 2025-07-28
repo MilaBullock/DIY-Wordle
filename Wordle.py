@@ -4,6 +4,7 @@ def good_word(word:str , length: int):
     """
     if len(word) != length:
         print(f"Please enter a word of length {length}.")
+        return False
     else:
         for char in word:
             if not char.isalpha():
@@ -53,12 +54,14 @@ def getting_word():
     given_word = random.choice([word for word in words if len(word) == length])
     
     #starting the 5 rounds of the game
-    for i in range(5):
+    attempts = 0
+    while attempts < 5:
         guess= input("Enter your guess:")
         guess = guess.lower()
 
         # checks if guess is valid and then finds matches
         if good_word(guess, length) == True:
+            attempts += 1
             if guess == given_word:
                 print ("Congratulations! You've guessed the word!")
                 return new_round()
@@ -70,7 +73,7 @@ def getting_word():
     return new_round()
 
 def main():
-    print(getting_word())
+    getting_word()
     
     
 if __name__ == "__main__":
