@@ -31,13 +31,16 @@ def find_match(guess:str, given_word:str):
     not in word = black
     """
     hint = ""
+    
     for i in range(len(given_word)):
         if guess[i] == given_word[i]:
             hint += "🟩"
-        elif guess[i] in given_word and guess[i] != given_word[i]:
-            hint += "🟨"    
-        else:
+        elif guess[i] not in given_word:
             hint += "⬛"
+        elif guess[i] == guess[i-1]: # to avoid double counting
+            hint += "⬛"
+        elif guess[i] in given_word and guess[i] != given_word[i]:
+            hint += "🟨"
     
     print(hint)
 
@@ -50,6 +53,7 @@ def getting_word():
   
     # getting the random word and length from the user
     length = int(input("Enter the lenght of the word you want: "))
+
     words = get_english_words_set(['web2'], lower=True, alpha=True)
     given_word = random.choice([word for word in words if len(word) == length])
     
@@ -73,7 +77,7 @@ def getting_word():
     return new_round()
 
 def main():
-    getting_word()
+    print(getting_word())
     
     
 if __name__ == "__main__":
