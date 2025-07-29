@@ -10,7 +10,7 @@ def good_word(word:str , length: int):
             if not char.isalpha():
                 return False
         return True
-        
+
 
 def new_round():
     """
@@ -30,19 +30,28 @@ def find_match(guess:str, given_word:str):
     right spot = green
     not in word = black
     """
-    hint = ""
+
+  
+    hint = [""] * len(given_word)
+    given_word_chars = list(given_word)
     
+    # First pass: mark correct positions (green)
+
     for i in range(len(given_word)):
         if guess[i] == given_word[i]:
-            hint += "🟩"
-        elif guess[i] not in given_word:
-            hint += "⬛"
-        elif guess[i] == guess[i-1]: # to avoid double counting
-            hint += "⬛"
-        elif guess[i] in given_word and guess[i] != given_word[i]:
-            hint += "🟨"
+            hint[i] = "🟩"
+            given_word_chars[i] = "used"  # Mark as used
     
-    print(hint)
+    # Second pass: mark letters in wrong positions (yellow) or not in word (black)
+
+    for i in range(len(given_word)):
+        if hint[i] == "":  
+            if guess[i] in given_word_chars:
+                hint[i] = "🟨"
+            else:
+                hint[i] = "⬛"
+    
+    print("".join(hint))
 
 def getting_word():
     """
@@ -52,8 +61,10 @@ def getting_word():
     from english_words import get_english_words_set
   
     # getting the random word and length from the user
-    length = int(input("Enter the lenght of the word you want: "))
-
+    print("Welcome to Wordle! \nYou have 5 attempts to guess the word.\nDont use any special characters or numbers.")
+    print("----------------------------------")
+    length = int(input("Enter the length of the word you want: "))
+    
     words = get_english_words_set(['web2'], lower=True, alpha=True)
     given_word = random.choice([word for word in words if len(word) == length])
     
